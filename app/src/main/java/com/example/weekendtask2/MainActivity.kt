@@ -1,174 +1,268 @@
 package com.example.weekendtask2
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.common.nav.NavRoutes
+import com.example.weekendtask2.ui.DashboardScreen
+import com.example.weekendtask2.ui.login.LoginScreen
+import com.example.weekendtask2.ui.login.SignUpScreen
+import com.example.weekendtask2.ui.search.SearchScreen
 import com.example.weekendtask2.ui.theme.WeekendTask2Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+//            val navController = rememberNavController()
+//            App(navController)
+
+            // Check if user is logged in or not
+//            val isLoggedIn = checkUserLoggedIn()
+//            if (isLoggedIn) {
+//                // If user is logged in, show main content
+//                // Example: setContent { MainContent() }
+//            } else {
+//                // If user is not logged in, show login screen
+//                setContent { LoginScreen() }
+//            }
+
+
             WeekendTask2Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   // Greeting("Android")
-                    LoginScreen()
+                    val navController = rememberNavController()
+                    MyApp(navController, true)
                 }
             }
+
         }
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(){
+fun MyApp(navController: NavHostController, isFirstRun:Boolean) {
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val bottomBarState = remember { mutableStateOf(true) }
+
+    when (navBackStackEntry?.destination?.route) {
+        NavRoutes.Dashboard.route,
+        NavRoutes.Search.route -> {
+            bottomBarState.value = true
+        }
+
+        else -> {
+            bottomBarState.value = false
+        }
+    }
+
+
+
     val context = LocalContext.current
 
-    /*
-    initialize keyboardController since user will be entering text
-    for email and pass
-     */
-    val keyboardController = LocalSoftwareKeyboardController.current
+    // Check if it's the first run
+//    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+//    val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
+//
 
-    // State for holding email and password
-    //these values will allow me to grab the info that the user has entered
-
-    val emailState = remember { mutableStateOf("") }
-    val passwordState = remember { mutableStateOf("") }
-
-    /*
-    Column to stack Image, EditText and Button elements vertically
-     */
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    //scaffold the bottom nav bar
+    Scaffold(
+        // top bar
+        bottomBar = {
+            if (bottomBarState.value) {
+                BottomAppBar(navController = navController)
+            }
+        }
+    ) { innerPadding ->
+    NavHost(
+        navController = navController,
+        startDestination = if (isFirstRun) NavRoutes.Login.route else NavRoutes.Dashboard.route,
+        modifier = Modifier.padding(innerPadding)
     ) {
-
-        //Image Element to display the music note
-        Image(
-            painter = painterResource(id = R.drawable.music_note_icon),
-            contentDescription = "Image",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            contentScale = ContentScale.Fit
-        )
-
-        //Add some space
-        Spacer(modifier = Modifier.height(16.dp))
-
-        //Add EditText for Email
-        TextField(
-            value = emailState.value,
-            onValueChange = { emailState.value = it },
-            label = { Text("Email") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
-
-        //Add some space
-        Spacer(modifier = Modifier.height(8.dp))
-
-        //Add Edit text for password
-        TextField(
-            value = passwordState.value,
-            onValueChange = { passwordState.value = it },
-            label = { Text("Password") },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
-                keyboardController?.hide()
-            }),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                // Handle login button click here
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Text("Login")
+        composable(NavRoutes.Login.route) {
+            // Navigate to LoginScreen if it's the first run
+            LoginScreen(navController = navController)
         }
-
-        Button(
-            onClick = {
-                // Handle login button click here
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Text("Sign Up")
+        composable(NavRoutes.SignUp.route) {
+            SignUpScreen(navController = navController)
+        }
+        composable(NavRoutes.Dashboard.route) {
+            // Navigate to Dashboard if it's not the first run
+            DashboardScreen(navController = navController)
+        }
+        composable(NavRoutes.Search.route) {
+            SearchScreen(navController = navController)
         }
     }
-
-
-}
-
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    WeekendTask2Theme {
-        Greeting("Android")
     }
 }
 
 
-@Preview(showBackground = true)
+//Display Bottom App Bar with required categories
+
 @Composable
-fun LoginPreview() {
+fun BottomAppBar(navController: NavHostController) {
+    var showSignOutDialog by remember { mutableStateOf(false) }
+
+    BottomNavigation(
+        backgroundColor = Color.White,
+        contentColor = Color.Black
+    ) {
+        //Dashboard Item
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    Icons.Filled.Home,
+                    contentDescription = "Dashboard"
+                )
+            },
+            selected = navController.currentDestination?.route == NavRoutes.Dashboard.route,
+            onClick = {
+                navController.navigate(NavRoutes.Dashboard.route) {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            }
+        )
+        //Search Item
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    Icons.Filled.Search,
+                    contentDescription = "Search"
+                )
+            },
+            selected = navController.currentDestination?.route == NavRoutes.Search.route,
+            onClick = {
+                navController.navigate(NavRoutes.Search.route) {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            }
+        )
+        //SignOut
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    Icons.Filled.ExitToApp,
+                    contentDescription = "Sign Out"
+                )
+            },
+            selected = false,
+            onClick = { showSignOutDialog = true }
+        )
+    }
+
+
+    if (showSignOutDialog) {
+        AlertDialog(
+            onDismissRequest = { showSignOutDialog = false },
+            title = { Text(text = "Sign Out") },
+            text = { Text(text = "Are you sure you want to Sign Out?") },
+            confirmButton = {
+                OutlinedButton(
+                    onClick = {
+                        showSignOutDialog = false
+                        navController.navigate(NavRoutes.Login.route) {
+                            popUpTo(NavRoutes.Dashboard.route) { inclusive = true }
+                        }
+
+                    },
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(48.dp)
+                        .padding(vertical = 1.5.dp),
+                    border = BorderStroke(1.dp, Color.Black),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color.Black,
+                        containerColor = Color.Transparent
+                    )
+                ) {
+                    Text("Yes")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showSignOutDialog = false }) {
+                    Text(
+                        text = "No",
+                        color = Color.Black,
+                        modifier = Modifier
+                            .height(48.dp)
+                            .padding(vertical = 1.5.dp),
+                    )
+                }
+            }
+        )
+    }
+}
+
+
+ fun checkUserLoggedIn(): Boolean {
+    // Implement logic to check if user is logged in
+    // Example: return true if user is logged in, false otherwise
+    return false
+}
+
+
+
+
+
+@Preview
+@Composable
+fun MyAppPreview() {
+
+
     WeekendTask2Theme {
-        LoginScreen()
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            // For preview, assume it's the first run
+            val navController = rememberNavController()
+            val isFirstRun = true
+            MyApp(navController, isFirstRun = true)
+        }
     }
 }
