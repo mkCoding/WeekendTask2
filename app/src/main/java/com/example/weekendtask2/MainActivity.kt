@@ -2,7 +2,6 @@ package com.example.weekendtask2
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -41,10 +40,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.common.nav.NavRoutes
-import com.example.weekendtask2.ui.DashboardScreen
-import com.example.weekendtask2.ui.login.LoginScreen
-import com.example.weekendtask2.ui.login.SignUpScreen
-import com.example.weekendtask2.ui.search.SearchScreen
+import com.example.weekendtask2.ui.compose.track.list.TrackListScreen
+import com.example.weekendtask2.ui.compose.login.LoginScreen
+import com.example.weekendtask2.ui.compose.login.SignUpScreen
+import com.example.weekendtask2.ui.compose.search.SearchScreen
 import com.example.weekendtask2.ui.theme.WeekendTask2Theme
 
 class MainActivity : ComponentActivity() {
@@ -88,7 +87,7 @@ fun MyApp(navController: NavHostController, isFirstRun:Boolean) {
     val bottomBarState = remember { mutableStateOf(true) }
 
     when (navBackStackEntry?.destination?.route) {
-        NavRoutes.Dashboard.route,
+        NavRoutes.Tracks.route,
         NavRoutes.Search.route -> {
             bottomBarState.value = true
         }
@@ -118,7 +117,7 @@ fun MyApp(navController: NavHostController, isFirstRun:Boolean) {
     ) { innerPadding ->
     NavHost(
         navController = navController,
-        startDestination = if (isFirstRun) NavRoutes.Login.route else NavRoutes.Dashboard.route,
+        startDestination = if (isFirstRun) NavRoutes.Login.route else NavRoutes.Tracks.route,
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(NavRoutes.Login.route) {
@@ -128,9 +127,9 @@ fun MyApp(navController: NavHostController, isFirstRun:Boolean) {
         composable(NavRoutes.SignUp.route) {
             SignUpScreen(navController = navController)
         }
-        composable(NavRoutes.Dashboard.route) {
+        composable(NavRoutes.Tracks.route) {
             // Navigate to Dashboard if it's not the first run
-            DashboardScreen(navController = navController)
+            TrackListScreen(navController = navController)
         }
         composable(NavRoutes.Search.route) {
             SearchScreen(navController = navController)
@@ -158,9 +157,9 @@ fun BottomAppBar(navController: NavHostController) {
                     contentDescription = "Dashboard"
                 )
             },
-            selected = navController.currentDestination?.route == NavRoutes.Dashboard.route,
+            selected = navController.currentDestination?.route == NavRoutes.Tracks.route,
             onClick = {
-                navController.navigate(NavRoutes.Dashboard.route) {
+                navController.navigate(NavRoutes.Tracks.route) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -206,7 +205,7 @@ fun BottomAppBar(navController: NavHostController) {
                     onClick = {
                         showSignOutDialog = false
                         navController.navigate(NavRoutes.Login.route) {
-                            popUpTo(NavRoutes.Dashboard.route) { inclusive = true }
+                            popUpTo(NavRoutes.Tracks.route) { inclusive = true }
                         }
 
                     },

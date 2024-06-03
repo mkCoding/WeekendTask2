@@ -1,4 +1,4 @@
-package com.example.weekendtask2.ui.search
+package com.example.weekendtask2.ui.compose.search
 
 import android.widget.Toast
 import androidx.compose.foundation.background

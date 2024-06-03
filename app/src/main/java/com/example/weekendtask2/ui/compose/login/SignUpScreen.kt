@@ -1,4 +1,4 @@
-package com.example.weekendtask2.ui.login
+package com.example.weekendtask2.ui.compose.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -25,17 +26,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.common.nav.NavRoutes
 import com.example.weekendtask2.R
-import com.example.weekendtask2.ui.theme.WeekendTask2Theme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(navController: NavHostController){
+fun SignUpScreen(navController: NavHostController){
     val context = LocalContext.current
 
     /*
@@ -47,8 +48,12 @@ fun LoginScreen(navController: NavHostController){
     // State for holding email and password
     //these values will allow me to grab the info that the user has entered
 
+    val firstName = remember { mutableStateOf("") }
+    val lastName = remember { mutableStateOf("") }
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
+    val confirmPassword = remember { mutableStateOf("") }
+
 
     /*
     Column to stack Image, EditText and Button elements vertically
@@ -61,16 +66,41 @@ fun LoginScreen(navController: NavHostController){
     ) {
 
         //Image Element to display the music note
-        Image(
-            painter = painterResource(id = R.drawable.music_note_icon),
-            contentDescription = "Image",
+        Text(
+            text = "Sign Up",
+            fontSize = 40.sp, // Adjust the font size as needed
+            color = Color.Black, // Customize the text color
+            textAlign = TextAlign.Center, // Align the text to the center
             modifier = Modifier
+                .padding(vertical = 16.dp) // Add some vertical padding for spacing
                 .fillMaxWidth()
-                .height(200.dp),
-            contentScale = ContentScale.Fit
+            , // Take up the full width available
+            style = MaterialTheme.typography.headlineLarge,
+            // You can customize the text style further if needed
         )
 
         //Add some space
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = firstName.value,
+            onValueChange = { emailState.value = it },
+            label = { Text("Firstname") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = lastName.value,
+            onValueChange = { emailState.value = it },
+            label = { Text("Lastname") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         //Add EditText for Email
@@ -99,23 +129,29 @@ fun LoginScreen(navController: NavHostController){
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         )
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-                navController.navigate(NavRoutes.Dashboard.route)
-            },
+        //Add confirm password
+        TextField(
+            value = confirmPassword.value,
+            onValueChange = {passwordState.value = it},
+            label = { Text(text = ("Confirm password"))},
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {
+                keyboardController?.hide()
+            }),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-        ) {
-            Text("Login")
-        }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+
 
         Button(
             onClick = {
-                navController.navigate(NavRoutes.SignUp.route)
+                // Handle login button click here
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -124,11 +160,12 @@ fun LoginScreen(navController: NavHostController){
             Text("Sign Up")
         }
     }
+
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
+fun signUpScreenPreview(){
     val navController = rememberNavController()
-    LoginScreen(navController = navController)
+    SignUpScreen(navController = navController)
 }

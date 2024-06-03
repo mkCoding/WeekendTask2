@@ -33,11 +33,19 @@ android {
 }
 
 dependencies {
+//    implementation(project(":core"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(project(":data"))
+//    implementation(project(":data"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("androidx.compose.foundation:foundation-android:1.6.7")
+
+    implementation("org.jetbrains.compose.material3:material3:1.6.10")
 }
