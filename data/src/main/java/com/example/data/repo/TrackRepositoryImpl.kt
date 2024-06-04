@@ -6,8 +6,9 @@ import com.example.domain.entity.Track
 import com.example.domain.repo.TrackRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-class TrackRepositoryImpl(
+class TrackRepositoryImpl @Inject constructor(
     private val remoteSource: RemoteTrackDataSource,
     private val localSource: LocalTrackDataSource
 

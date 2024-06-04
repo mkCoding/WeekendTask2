@@ -7,7 +7,6 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-class LocalDataSourceModule {
     @Module
     @InstallIn(SingletonComponent::class)
     abstract class LocalDataSourceModule {
@@ -16,4 +15,3 @@ class LocalDataSourceModule {
         abstract fun bindTrackDataSource(dataSource: LocalTrackDataSourceImpl): LocalTrackDataSource
     }
 
-}
