@@ -43,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.1" //compose compiler
     }
     packaging {
         resources {
@@ -102,6 +102,10 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
-    implementation("org.jetbrains.compose.animation:animation-core-android:0.5.0-build270")
+//    implementation("org.jetbrains.compose.animation:animation-core-android:0.5.0-build270")
+    implementation("com.android.support.test.espresso:espresso-core:3.0.2")
+
+
+
 
 }

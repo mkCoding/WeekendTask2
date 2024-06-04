@@ -1,11 +1,5 @@
 package com.example.domain.entity
 
-
-import com.example.data.remote.network.AlbumModel
-import com.example.data.remote.network.ArtistModelX
-import com.example.data.remote.network.ExternalIdsModel
-import com.example.data.remote.network.ExternalUrlsModelXXX
-
 data class Track (
     val album: AlbumModel? = AlbumModel(),
     val artists: List<ArtistModelX>? = listOf(),

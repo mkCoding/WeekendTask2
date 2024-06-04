@@ -30,17 +30,24 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures{
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
 }
 
 dependencies {
-//    implementation(project(":core"))
+//    implementation(project(":app"))
 
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(project(":data"))
 //    implementation(project(":data"))
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

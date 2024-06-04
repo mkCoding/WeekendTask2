@@ -37,13 +37,13 @@ android {
 
 dependencies {
 
-//    implementation(project(":core"))
     implementation(project(":domain"))
 
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.room.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,7 +1,6 @@
 package com.example.common.nav
 
-import com.example.data.remote.network.ArtistModelX
-
+import com.example.domain.entity.ArtistModelX
 
 
 data class TrackInput(

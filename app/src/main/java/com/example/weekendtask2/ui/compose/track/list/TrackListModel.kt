@@ -1,6 +1,6 @@
 package com.example.weekendtask2.ui.compose.track.list
 
-import com.example.data.remote.network.AlbumModel
+import com.example.domain.entity.AlbumModel
 import com.example.data.remote.network.ArtistModelX
 import com.example.data.remote.network.ExternalIdsModel
 import com.example.data.remote.network.ExternalUrlsModelXXX

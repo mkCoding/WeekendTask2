@@ -2,7 +2,7 @@ package com.example.common.nav
 
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
-import com.example.data.remote.network.ArtistModelX
+import com.example.domain.entity.ArtistModelX
 
 class NavRoutes {
 
@@ -20,7 +20,7 @@ class NavRoutes {
                     "${ARG_TRACK_NAME}=${input.trackName}&" +
                     "${ARG_ARTIST}=${input.artist?.get(0)?.name}&" + //extract name from artist list
                     "${ARG_TRACK_NAME}=${input.trackName}&" +
-                    "${ARG_DURATION}=${input.duration}&" +
+                    "${ARG_DURATION}=${input.durationMs}&" +
                     "${ARG_EXPLICIT}=${input.explicit}"
 
         //"movies/${input.movieId}?${ARG_ORIGIN_TITLE}=${input.originalTitle}&${ARG_IMAGE}=${input.posterPath}&${ARG_OVERVIEW}=${input.overview}&${ARG_RELEASE_DATE}=${input.releaseDate}"

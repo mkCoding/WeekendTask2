@@ -31,6 +31,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures{
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
 }
 
 dependencies {
@@ -40,7 +48,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.navigation.common.ktx)
-//    implementation(project(":data"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -48,10 +55,11 @@ dependencies {
     implementation("androidx.compose.runtime:runtime:1.6.7")
     implementation("androidx.compose.foundation:foundation:1.6.7")
     implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("\"org.jetbrains.kotlin:kotlin-parcelize-runtime:2.0.0")
+    implementation("org.jetbrains.kotlin:kotlin-parcelize-runtime:2.0.0")
 
     //GSON
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:2.10.0")
+
 
 }

@@ -1,8 +1,11 @@
 package com.example.data.remote.source
 
+import androidx.lifecycle.LiveData
 import com.example.data.remote.network.SpotifyService
+import com.example.data.remote.network.TopTracksModel
 import com.example.data.remote.network.TrackModel
 import com.example.data.repo.remote.RemoteTrackDataSource
+import com.example.domain.entity.Track
 import com.example.domain.entity.UseCaseException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -10,28 +13,44 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class RemoteTopAlbumnDataSourceImpl @Inject constructor(
+class RemoteTrackDataSourceImpl @Inject constructor(
     private val service: SpotifyService
 ):RemoteTrackDataSource {
+    
+    override fun getTopTracks(): Flow<TopTracksModel>? =flow {
+        emit(service.getTopTracksModel())}
+    .catch {
+        throw UseCaseException.TrackException(it)
+    }
 
-
-    override fun getTracks(): Flow<List<TrackModel?>?> = flow {
-        emit(service.getTopTracksModel())
-    }.map { model ->
-        model.tracks?.map { apiModel ->
-            convert(apiModel)
-        }
+    override fun getTracks(): Flow<List<Track?>> = flow {
+        emit(service.getTracks())
     }.catch {
         throw UseCaseException.TrackException(it)
     }
-//
-//    override fun getTrack(trackId: String?): Flow<TrackModel?>? = flow {
-//        emit(service.getTopTracksModel())
-//    }.map {
-//        convert(it)
+
+    override fun getTrack(trackId: Int?): Flow<Track> {
+        TODO("Not yet implemented")
+    }
+
+//    override fun getTrack(trackId: Int?): Flow<TrackModel> =
+//        flow {
+//        val trackModel = service.getTrack(trackId)
+//        emit(convert(trackModel))
 //    }.catch {
 //        throw UseCaseException.TrackException(it)
 //    }
+
+    /*
+     override fun getMovie(movieId: Int?): Flow<Movie> = flow {
+        emit(service.getMovie(movieId))
+    }.map {
+        convert(it)
+    }.catch {
+        throw UseCaseException.MovieException(it)
+    }
+     */
+
 
     private fun convert(model: TrackModel?) =
         TrackModel(

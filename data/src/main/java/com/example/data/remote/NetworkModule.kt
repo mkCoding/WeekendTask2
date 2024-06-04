@@ -28,7 +28,7 @@ class NetworkModule {
         .connectTimeout(15, TimeUnit.SECONDS)
         .build()
 
-    //API: https://api.spotify.com/v1/search?type=album&q=artist:Kanye West
+    //API: https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg/top-tracks
     //Also need to pass bearer token
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
@@ -38,6 +38,6 @@ class NetworkModule {
         .build()
 
     @Provides
-    fun provideMovieService(retrofit: Retrofit): SpotifyService =
+    fun provideTrackService(retrofit: Retrofit): SpotifyService =
         retrofit.create(SpotifyService::class.java)
 }

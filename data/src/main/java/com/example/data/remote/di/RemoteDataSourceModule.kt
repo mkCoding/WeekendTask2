@@ -1,6 +1,6 @@
 package com.example.data.remote.di
 
-import com.example.data.remote.source.RemoteTopAlbumnDataSourceImpl
+import com.example.data.remote.source.RemoteTrackDataSourceImpl
 import com.example.data.repo.remote.RemoteTrackDataSource
 import dagger.Binds
 import dagger.Module
@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 abstract class RemoteDataSourceModule {
 
     @Binds
-    abstract fun bindCompanyInfoDataSource(datasource: RemoteTopAlbumnDataSourceImpl): RemoteTrackDataSource
+    abstract fun bindCompanyInfoDataSource(datasource: RemoteTrackDataSourceImpl): RemoteTrackDataSource
 }
