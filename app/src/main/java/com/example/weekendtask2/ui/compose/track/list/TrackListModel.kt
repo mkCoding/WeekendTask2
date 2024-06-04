@@ -1,9 +1,9 @@
 package com.example.weekendtask2.ui.compose.track.list
 
 import com.example.domain.entity.AlbumModel
-import com.example.data.remote.network.ArtistModelX
-import com.example.data.remote.network.ExternalIdsModel
-import com.example.data.remote.network.ExternalUrlsModelXXX
+import com.example.domain.entity.ArtistModelX
+import com.example.domain.entity.ExternalIdsModel
+import com.example.domain.entity.ExternalUrlsModelXXX
 import com.google.gson.annotations.SerializedName
 
 data class TrackListModel (

@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface LocalTrackDataSource {
 
     fun getTracks(tracks: List<Track?>?): Flow<List<Track>>
-    fun getTrack(trackId: Int?): Flow<Track>
+    fun getTrack(trackId: String?): Flow<Track>
 
-    suspend fun addTracks(movies: List<Track?>?)
+    suspend fun addTracks(tracks: List<Track?>?)
 
 }

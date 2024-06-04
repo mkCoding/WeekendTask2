@@ -41,15 +41,6 @@ class RemoteTrackDataSourceImpl @Inject constructor(
 //        throw UseCaseException.TrackException(it)
 //    }
 
-    /*
-     override fun getMovie(movieId: Int?): Flow<Movie> = flow {
-        emit(service.getMovie(movieId))
-    }.map {
-        convert(it)
-    }.catch {
-        throw UseCaseException.MovieException(it)
-    }
-     */
 
 
     private fun convert(model: TrackModel?) =
